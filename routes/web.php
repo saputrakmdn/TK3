@@ -32,6 +32,11 @@ Route::prefix('barang')->group(function(){
     Route::post('/edit', [\App\Http\Controllers\BarangController::class, 'edit'])->name('barang.edit');
 });
 
+Route::prefix('order')->group(function (){
+   Route::get('/', [\App\Http\Controllers\OrderController::class, 'index'])->name('order.index');
+   Route::post('/submit', [\App\Http\Controllers\OrderController::class, 'submit'])->name('order.submit');
+});
+
 Route::get('/dashboard', [\App\Http\Controllers\HomeController::class, 'indexUser'])->middleware(['auth', 'role:user'])->name('dashboard');
 
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function (){

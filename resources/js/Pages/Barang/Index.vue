@@ -162,7 +162,7 @@ const editBarang = () => {
 </script>
 
 <template>
-    <Head title="Admin"></Head>
+    <Head title="Barang"></Head>
 
     <AuthenticatedLayout>
         <template #header>
