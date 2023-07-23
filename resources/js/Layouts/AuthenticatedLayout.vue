@@ -35,11 +35,14 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink v-if="$page.props.auth.user.role !== 'user'" :href="route('barang.index')" :active="route().current('barang.index')">
                                     Barang
                                 </NavLink>
-                                <NavLink v-if="$page.props.auth.user.role !== 'user'" :href="route('order.list')" :active="route().current('order.list')">
+                                <NavLink v-if="$page.props.auth.user.role === 'staff'" :href="route('order.list')" :active="route().current('order.list')">
                                     Order List
                                 </NavLink>
                                 <NavLink v-if="$page.props.auth.user.role === 'user'" :href="route('order.index')" :active="route().current('order.index')">
                                     Product
+                                </NavLink>
+                                <NavLink v-if="$page.props.auth.user.role !== 'user'" :href="route('user.index')" :active="route().current('user.index')">
+                                    Manage User
                                 </NavLink>
                             </div>
                         </div>

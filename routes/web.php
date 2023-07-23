@@ -25,6 +25,13 @@ Route::get('/', function () {
     ]);
 });
 
+Route::prefix('manage-user')->group(function (){
+    Route::get('/', [\App\Http\Controllers\ManageUserController::class, 'index'])->name('user.index');
+    Route::post('/create', [\App\Http\Controllers\ManageUserController::class, 'create'])->name('user.create');
+    Route::post('/delete', [\App\Http\Controllers\ManageUserController::class, 'delete'])->name('user.delete');
+    Route::post('/edit', [\App\Http\Controllers\ManageUserController::class, 'edit'])->name('user.edit');
+})->middleware(['auth']);
+
 Route::prefix('barang')->group(function(){
     Route::get('/', [\App\Http\Controllers\BarangController::class, 'index'])->name('barang.index');
     Route::post('/add', [\App\Http\Controllers\BarangController::class, 'create'])->name('barang.create');

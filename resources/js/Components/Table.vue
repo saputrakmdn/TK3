@@ -29,7 +29,7 @@
             <table class="table-auto w-full text-center">
                 <thead class="bg-gray-300 text-gray-700">
                 <tr>
-                    <th v-if="processColumn"></th>
+                    <th v-if="processColumn || (roleAdmin === true && $page.props.auth.user.role === 'admin')"></th>
                     <th class="p-2" :class="{'hidden':hiddenColumns.includes(columnName.real)}" v-for="columnName in columnNames" :key="columnName">
                         <div class="flex gap-2 items-center justify-center">
                             <span @click="sortRecords(columnName.real)" class="hover:text-white cursor-pointer">
@@ -44,7 +44,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                 <tr v-for="(record, index) in datatableRecords" :class="{'bg-gray-50':index % 2 !== 0}" :key="record">
-                    <td v-if="processColumn" class="p-2 text-left">
+                    <td v-if="processColumn || (roleAdmin === true && $page.props.auth.user.role === 'admin')" class="p-2 text-left">
                         <Dropdown classes="w-44 p-2 border">
                             <span class="inline-block p-2 rounded bg-gray-500 hover:bg-gray-600 text-white"><i class="fas fa-list"></i></span>
                             <template v-slot:items>
@@ -138,6 +138,10 @@ const props = defineProps({
         default:[],
         type:Array
     },
+    roleAdmin:{
+        default: false,
+        type: Boolean
+    }
 });
 
 const emit = defineEmits(['onCreate','onEdit','onDelete','onRead', 'onAccept', "onReject"])

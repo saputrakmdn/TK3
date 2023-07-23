@@ -31,7 +31,6 @@ class BarangController extends Controller
         $file = $request->file('gambar_barang');
 
         Storage::disk('public')->putFileAs('/', $file, $file->getClientOriginalName());
-//        dd(Storage::url($file->getClientOriginalName()));
         $form = $request->all();
         $form['gambar_barang'] = Storage::url($file->getClientOriginalName());
 
