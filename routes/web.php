@@ -35,6 +35,7 @@ Route::prefix('barang')->group(function(){
 Route::prefix('order')->group(function (){
    Route::get('/', [\App\Http\Controllers\OrderController::class, 'index'])->name('order.index');
    Route::post('/submit', [\App\Http\Controllers\OrderController::class, 'submit'])->name('order.submit');
+    Route::get('/list', [\App\Http\Controllers\OrderController::class, 'orderList'])->name('order.list');
 });
 
 Route::get('/dashboard', [\App\Http\Controllers\HomeController::class, 'indexUser'])->middleware(['auth', 'role:user'])->name('dashboard');

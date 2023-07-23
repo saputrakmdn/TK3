@@ -2,7 +2,7 @@
     <div v-if="records.length > 0" class="bg-white p-2 rounded">
         <div class="flex flex-col md:flex-row md:justify-between gap-2 mb-2">
             <div class="flex gap-2 items-center">
-                <button @click.prevent="$emit('onCreate')" class="p-2 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 focus:outline-0 rounded"><i class="fas fa-plus md:mr-2"></i><span class="hidden md:inline">Create</span></button>
+                <button v-if="createButton" @click.prevent="$emit('onCreate')" class="p-2 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 focus:outline-0 rounded"><i class="fas fa-plus md:mr-2"></i><span class="hidden md:inline">Create</span></button>
                 <input v-model="filterInputValue" @keyup.prevent="filterRecords" type="text" placeholder="Search Records" class="p-2 bg-gray-100 border border-gray-200 focus:outline-0 rounded flex-grow md:flex-grow-0">
             </div>
             <div class="flex justify-end gap-2 items-center">
@@ -39,6 +39,7 @@
                             </span>
                         </div>
                     </th>
+                    <th v-if="action">Action</th>
                 </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
@@ -56,6 +57,9 @@
                         </Dropdown>
                     </td>
                     <td :class="{'hidden':hiddenColumns.includes(key)}" class="p-2" v-for="key in Object.keys(record)" v-show="!exceptColumns.includes(key)" :key="key" v-html="cellFormatter(record[key], key)"></td>
+                    <td v-if="action && record[conditionAction.object] === conditionAction.condition">
+                        <button v-for="item in actionItems" @click.prevent="$emit(item.emitName, record)" :class="item.classes">{{item.name}}</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -83,6 +87,8 @@ import {_} from 'lodash';
 
 import * as XLSX from 'xlsx'
 import Dropdown from "@/Components/DropdownTable.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import DangerButton from "@/Components/DangerButton.vue";
 const props = defineProps({
     language:{
         default:"en",
@@ -115,10 +121,26 @@ const props = defineProps({
     cellFormatter:{
         default:(value)=>{return value},
         type: Function
-    }
+    },
+    createButton:{
+        default: true,
+        type: Boolean
+    },
+    action:{
+        default: false,
+        type: Boolean
+    },
+    conditionAction:{
+        default: {},
+        type: Object
+    },
+    actionItems:{
+        default:[],
+        type:Array
+    },
 });
 
-const emit = defineEmits(['onCreate','onEdit','onDelete','onRead'])
+const emit = defineEmits(['onCreate','onEdit','onDelete','onRead', 'onAccept', "onReject"])
 
 // Init comp. needed reactive variable section
 const perPageRecordNumbers = ref([10,25,50,100]);

@@ -6,6 +6,7 @@ use App\Models\Barang;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -26,5 +27,17 @@ class OrderController extends Controller
         $order->status = 'pending';
         $order->save();
         return back();
+    }
+
+    public function orderList()
+    {
+        $data = Order::query()->select('barang.id as id', 'barang.nama_barang as nama_barang', 'users.name as pembeli', 'orders.quantity as qty', 'barang.harga_jual as harga', DB::raw('(orders.quantity * barang.harga_jual) as total'), 'orders.status as status')
+            ->join('barang', 'orders.barang_id', '=', 'barang.id')
+            ->join('users', 'orders.user_id', '=', 'users.id')
+            ->get();
+//        dd($data);
+        return Inertia::render('Order/List', [
+            'orders' => $data
+        ]);
     }
 }
