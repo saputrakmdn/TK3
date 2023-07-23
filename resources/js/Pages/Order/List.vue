@@ -9,7 +9,13 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <Table :createButton="false" :actionItems="menu" @onAccept="accept($event)" :records="orders" :cellFormatter="cellFormatter" :action="true" :conditionAction="conditionAction" :columnNames="columns"></Table>
+                    <Transition enter-active-class="transition ease-in-out"
+                                enter-from-class="opacity-0"
+                                leave-active-class="transition ease-in-out"
+                                leave-to-class="opacity-0">
+                        <p v-if="form.hasErrors.valueOf('stock')" class="mb-4 font-medium text-center text-lg text-red-600">{{form.errors.stock}}</p>
+                    </Transition>
+                    <Table :createButton="false" :exceptColumns="['id', 'barang_id']" :actionItems="menu" @onAccept="accept($event)" @onReject="reject($event)" :records="orders" :cellFormatter="cellFormatter" :action="true" :conditionAction="conditionAction" :columnNames="columns"></Table>
                 </div>
             </div>
         </div>
@@ -74,6 +80,14 @@ const menu = [
         icon: ""
     }
 ];
+
+const form = useForm({
+    id: '',
+    status: '',
+    qty: '',
+    barang_id: ''
+});
+
 const conditionAction = {
     object: 'status',
     condition: 'pending'
@@ -88,7 +102,29 @@ const cellFormatter = (value, key) => {
 }
 
 const accept = (value) => {
-    console.log(value)
+   form.id = value.id;
+   form.status = 'accept';
+   form.qty = value.qty;
+   form.barang_id = value.barang_id;
+   form.post(route('order.status'),{
+       preserveScroll: true,
+       onSuccess: () =>{
+           form.reset()
+       }
+   });
+}
+
+const reject = (value) => {
+    form.id = value.id;
+    form.status = 'reject';
+    form.qty = value.qty;
+    form.barang_id = value.barang_id;
+    form.post(route('order.status'),{
+        preserveScroll: true,
+        onSuccess: () =>{
+            form.reset()
+        }
+    });
 }
 </script>
 

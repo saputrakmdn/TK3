@@ -40,6 +40,9 @@ class AuthenticatedSessionController extends Controller
         if(auth()->user()->role == 'staff')
             $redirectUrl = RouteServiceProvider::STAFF;
 
+        if(auth()->user()->role == 'user')
+            $redirectUrl = RouteServiceProvider::USER;
+
 
         return redirect()->intended($redirectUrl);
     }

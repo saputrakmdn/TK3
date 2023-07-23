@@ -30,22 +30,26 @@ Route::prefix('barang')->group(function(){
     Route::post('/add', [\App\Http\Controllers\BarangController::class, 'create'])->name('barang.create');
     Route::post('/delete', [\App\Http\Controllers\BarangController::class, 'delete'])->name('barang.delete');
     Route::post('/edit', [\App\Http\Controllers\BarangController::class, 'edit'])->name('barang.edit');
-});
+})->middleware(['auth', 'role:staff']);
 
 Route::prefix('order')->group(function (){
    Route::get('/', [\App\Http\Controllers\OrderController::class, 'index'])->name('order.index');
    Route::post('/submit', [\App\Http\Controllers\OrderController::class, 'submit'])->name('order.submit');
-    Route::get('/list', [\App\Http\Controllers\OrderController::class, 'orderList'])->name('order.list');
+   Route::get('/list', [\App\Http\Controllers\OrderController::class, 'orderList'])->name('order.list')->middleware(['auth', 'role:staff']);
+   Route::post('/change-status', [\App\Http\Controllers\OrderController::class, 'changeStatus'])->name('order.status')->middleware(['auth', 'role:staff']);
 });
 
-Route::get('/dashboard', [\App\Http\Controllers\HomeController::class, 'indexUser'])->middleware(['auth', 'role:user'])->name('dashboard');
+Route::middleware(['auth', 'role:user'])->group(function (){
+    Route::get('/dashboard', [\App\Http\Controllers\HomeController::class, 'indexUser'])->name('user');
+});
+
 
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function (){
-    Route::get('/', [\App\Http\Controllers\HomeController::class, 'indexAdmin']);
+    Route::get('/', [\App\Http\Controllers\HomeController::class, 'indexAdmin'])->name('admin');
 });
 
 Route::prefix('staff')->middleware(['auth', 'role:staff'])->group(function (){
-    Route::get('/', [\App\Http\Controllers\HomeController::class, 'indexStaff']);
+    Route::get('/', [\App\Http\Controllers\HomeController::class, 'indexStaff'])->name('staff');
 });
 
 Route::middleware('auth')->group(function () {

@@ -17,6 +17,12 @@
                                     leave-to-class="opacity-0">
                             <p v-if="form.recentlySuccessful" class="mb-4 font-medium text-center text-lg text-green-600">Order berhasil diterima. Mohon tunggu staff kami untuk proses order.</p>
                         </Transition>
+                        <Transition enter-active-class="transition ease-in-out"
+                                    enter-from-class="opacity-0"
+                                    leave-active-class="transition ease-in-out"
+                                    leave-to-class="opacity-0">
+                            <p v-if="form.hasErrors.valueOf('stock')" class="mb-4 font-medium text-center text-lg text-red-600">{{form.errors.stock}}</p>
+                        </Transition>
                         <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                             <div class="group relative" v-for="(value, index) in products">
                                 <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
@@ -131,6 +137,10 @@ const submitOrder = () => {
     form.post(route('order.submit'),{
         preserveScroll: true,
         onSuccess: () =>{
+            form.reset(),
+            modalQty.value = false;
+        },
+        onError: () =>{
             form.reset(),
             modalQty.value = false;
         }
