@@ -17,24 +17,20 @@ defineProps({
 });
 
 const form = useForm({
-    nama_barang: '',
-    deskripsi: '',
-    jenis_barang: '',
-    stock_barang: '',
-    harga_beli: '',
-    harga_jual: '',
-    gambar_barang: ''
+    nama: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+    jenis_kelamin: ''
 });
 
 const formEdit = useForm({
     id: '',
-    nama_barang: '',
-    deskripsi: '',
-    jenis_barang: '',
-    stock_barang: '',
-    harga_beli: '',
-    harga_jual: '',
-    gambar_barang: ''
+    nama: '',
+    email: '',
+    password: null,
+    password_confirmation: null,
+    jenis_kelamin: ''
 });
 
 const formDelete = useForm({
@@ -62,32 +58,16 @@ const menu = [
 
 const columns = [
     {
-        name: "Nama Barang",
-        real: "nama_barang"
+        name: "Nama",
+        real: "nama"
     },
     {
-        name: "Deskripsi",
-        real: "deskripsi"
+        name: "Email",
+        real: "email"
     },
     {
-        name: "Jenis Barang",
-        real: "jenis_barang"
-    },
-    {
-        name: "Stock Barang",
-        real: "stock_barang"
-    },
-    {
-        name: "Harga Beli",
-        real: "harga_beli"
-    },
-    {
-        name: "Harga Jual",
-        real: "harga_jual"
-    },
-    {
-        name: "Gambar Barang",
-        real: "gambar_barang"
+        name: "Jenis Kelamin",
+        real: "jenis_kelamin"
     },
 ];
 
@@ -97,12 +77,9 @@ const onNewRecord = () =>{
 
 const onEditData = (event) =>{
     formEdit.id = event.id;
-    formEdit.nama_barang = event.nama_barang;
-    formEdit.deskripsi = event.deskripsi;
-    formEdit.jenis_barang = event.jenis_barang;
-    formEdit.stock_barang = event.stock_barang;
-    formEdit.harga_beli = event.harga_beli;
-    formEdit.harga_jual = event.harga_jual;
+    formEdit.nama = event.name;
+    formEdit.email = event.email;
+    formEdit.jenis_kelamin = event.jenis_kelamin;
 
     modalEdit.value = true;
 }
@@ -124,8 +101,8 @@ const closeModalEdit = () => {
     modalEdit.value = false;
 };
 
-const createBarang = () => {
-    form.post(route('barang.create'), {
+const createUser = () => {
+    form.post(route('user.staff.create'), {
         preserveScroll: true,
         onSuccess: () =>{
             form.reset(),
@@ -135,7 +112,7 @@ const createBarang = () => {
 };
 
 const deleteData = () =>{
-    formDelete.post(route('barang.delete'), {
+    formDelete.post(route('user.delete'), {
         preserveScroll: true,
         onSuccess: () =>{
             formDelete.reset(),
@@ -150,8 +127,8 @@ const cellFormatter = (value, key) => {
     return value;
 }
 
-const editBarang = () => {
-    formEdit.post(route('barang.edit'), {
+const editUser = () => {
+    formEdit.post(route('user.staff.edit'), {
         preserveScroll: true,
         onSuccess: () =>{
             formEdit.reset(),
@@ -181,111 +158,72 @@ const editBarang = () => {
     <Modal :show="triggerModal" @close="closeModal">
         <div class="p-6">
             <h2 class="text-lg font-medium text-gray-900">
-                Tambah Barang
+                Tambah Staff
             </h2>
 
-            <form @submit.prevent="createBarang" class="mt-6 space-y-6" enctype="multipart/form-data">
+            <form @submit.prevent="createUser" class="mt-6 space-y-6" enctype="multipart/form-data">
                 <div>
-                    <InputLabel for="nama_barang" value="Nama Barang" />
+                    <InputLabel for="nama" value="Nama" />
 
                     <TextInput
-                        id="nama_barang"
-                        ref="namaBarangInput"
-                        v-model="form.nama_barang"
+                        id="nama"
+                        v-model="form.nama"
                         type="text"
                         class="mt-1 block w-full"
-                        autocomplete="nama-barang"
+                        autocomplete="nama"
                     />
 
-                    <InputError :message="form.errors.nama_barang" class="mt-2" />
+                    <InputError :message="form.errors.nama" class="mt-2" />
                 </div>
                 <div>
-                    <InputLabel for="deskripsi" value="Deskripsi" />
+                    <InputLabel for="email" value="Email" />
 
                     <TextInput
-                        id="deskripsi"
-                        ref="deskripsiInput"
-                        v-model="form.deskripsi"
-                        type="text"
+                        id="email"
+                        v-model="form.email"
+                        type="email"
                         class="mt-1 block w-full"
-                        autocomplete="deskripsi"
+                        autocomplete="email"
                     />
 
-                    <InputError :message="form.errors.deskripsi" class="mt-2" />
+                    <InputError :message="form.errors.email" class="mt-2" />
                 </div>
                 <div>
-                    <InputLabel for="jenis_barang" value="Jenis Barang" />
+                    <InputLabel for="password" value="Password" />
 
                     <TextInput
-                        id="jenis_barang"
-                        ref="jenisBarangiInput"
-                        v-model="form.jenis_barang"
-                        type="text"
+                        id="password"
+                        v-model="form.password"
+                        type="password"
                         class="mt-1 block w-full"
-                        autocomplete="jenis-barang"
+                        autocomplete="password"
                     />
 
-                    <InputError :message="form.errors.jenis_barang" class="mt-2" />
+                    <InputError :message="form.errors.password" class="mt-2" />
                 </div>
                 <div>
-                    <InputLabel for="stock_barang" value="Stock Barang" />
+                    <InputLabel for="password_confirmation" value="Password Confirmation" />
 
                     <TextInput
-                        id="stock_barang"
-                        ref="stockBarangiInput"
-                        v-model="form.stock_barang"
-                        type="number"
+                        id="password_confirmation"
+                        v-model="form.password_confirmation"
+                        type="password"
                         class="mt-1 block w-full"
-                        autocomplete="stock-barang"
+                        autocomplete="password_confirmation"
                     />
 
-                    <InputError :message="form.errors.stock_barang" class="mt-2" />
+                    <InputError :message="form.errors.password_confirmation" class="mt-2" />
                 </div>
                 <div>
-                    <InputLabel for="harga_beli" value="Harga Beli" />
+                    <InputLabel for="jenis_kelamin" value="Jenis Kelamin" />
 
-                    <TextInput
-                        id="harga_beli"
-                        ref="hargaBeliInput"
-                        v-model="form.harga_beli"
-                        type="number"
-                        class="mt-1 block w-full"
-                        autocomplete="harga-beli"
-                    />
+                    <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" id="jenis_kelamin" name="jenis_kelamin" v-model="form.jenis_kelamin">
+                        <option value="">-Pilih Jenis Kelamin--</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
 
-                    <InputError :message="form.errors.harga_beli" class="mt-2" />
-                </div>
-                <div>
-                    <InputLabel for="harga_jual" value="Harga Jual" />
-
-                    <TextInput
-                        id="harga_jual"
-                        ref="jualBeliInput"
-                        v-model="form.harga_jual"
-                        type="number"
-                        class="mt-1 block w-full"
-                        autocomplete="harga-jual"
-                    />
-
-                    <InputError :message="form.errors.harga_jual" class="mt-2" />
-                </div>
-                <div>
-                    <InputLabel for="gambar_barang" value="Gambar Barang" />
-
-                    <TextInput
-                        id="gambar_barang"
-                        ref="gambarBarangInput"
-                        @input="form.gambar_barang = $event.target.files[0]"
-                        type="file"
-                        accept="image/png, image/jpeg, image/jpg"
-                        class="mt-1 block w-full"
-                        autocomplete="gambar-barang"
-                    />
-                    <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-                        {{ form.progress.percentage }}%
-                    </progress>
-
-                    <InputError :message="form.errors.gambar_barang" class="mt-2" />
+                    <InputError :message="form.errors.jenis_kelamin" class="mt-2" />
                 </div>
 
                 <div class="flex items-center gap-4">
@@ -333,116 +271,78 @@ const editBarang = () => {
     <Modal :show="modalEdit" @close="closeModalEdit">
         <div class="p-6">
             <h2 class="text-lg font-medium text-gray-900">
-                Tambah Barang
+                Edit User
             </h2>
 
-            <form @submit.prevent="editBarang" class="mt-6 space-y-6" enctype="multipart/form-data">
+            <form @submit.prevent="editUser" class="mt-6 space-y-6" enctype="multipart/form-data">
                 <div>
-                    <InputLabel for="nama_barang-edit" value="Nama Barang" />
+                    <InputLabel for="nama_edit" value="Nama" />
 
                     <TextInput
-                        id="nama_barang-edit"
-                        ref="namaBarangInput"
-                        v-model="formEdit.nama_barang"
+                        id="nama_edit"
+                        v-model="formEdit.nama"
                         type="text"
                         class="mt-1 block w-full"
-                        autocomplete="nama-barang"
+                        autocomplete="nama"
                     />
 
-                    <InputError :message="formEdit.errors.nama_barang" class="mt-2" />
+                    <InputError :message="formEdit.errors.nama" class="mt-2" />
                 </div>
                 <div>
-                    <InputLabel for="deskripsi-edit" value="Deskripsi" />
+                    <InputLabel for="email-edit" value="Email" />
 
                     <TextInput
-                        id="deskripsi-edit"
-                        ref="deskripsiInput"
-                        v-model="formEdit.deskripsi"
-                        type="text"
+                        id="email-edit"
+                        v-model="formEdit.email"
+                        type="email"
                         class="mt-1 block w-full"
-                        autocomplete="deskripsi"
+                        autocomplete="email"
+                        disabled="true"
                     />
 
-                    <InputError :message="formEdit.errors.deskripsi" class="mt-2" />
+                    <InputError :message="formEdit.errors.email" class="mt-2" />
                 </div>
                 <div>
-                    <InputLabel for="jenis_barang-edit" value="Jenis Barang" />
+                    <InputLabel for="password-edit" value="Password" />
 
                     <TextInput
-                        id="jenis_barang-edit"
-                        ref="jenisBarangiInput"
-                        v-model="formEdit.jenis_barang"
-                        type="text"
+                        id="password-edit"
+                        v-model="formEdit.password"
+                        type="password"
                         class="mt-1 block w-full"
-                        autocomplete="jenis-barang"
+                        autocomplete="password"
                     />
 
-                    <InputError :message="formEdit.errors.jenis_barang" class="mt-2" />
+                    <InputError :message="formEdit.errors.password" class="mt-2" />
                 </div>
                 <div>
-                    <InputLabel for="stock_barang-edit" value="Stock Barang" />
+                    <InputLabel for="password_confirmation-edit" value="Password Confirmation" />
 
                     <TextInput
-                        id="stock_barang-edit"
-                        ref="stockBarangiInput"
-                        v-model="formEdit.stock_barang"
-                        type="number"
+                        id="password_confirmation-edit"
+                        v-model="formEdit.password_confirmation"
+                        type="password"
                         class="mt-1 block w-full"
-                        autocomplete="stock-barang"
+                        autocomplete="password_confirmation"
                     />
 
-                    <InputError :message="formEdit.errors.stock_barang" class="mt-2" />
+                    <InputError :message="formEdit.errors.password_confirmation" class="mt-2" />
                 </div>
                 <div>
-                    <InputLabel for="harga_beli-edit" value="Harga Beli" />
+                    <InputLabel for="jenis_kelamin-edit" value="Jenis Kelamin" />
 
-                    <TextInput
-                        id="harga_beli-edit"
-                        ref="hargaBeliInput"
-                        v-model="formEdit.harga_beli"
-                        type="number"
-                        class="mt-1 block w-full"
-                        autocomplete="harga-beli"
-                    />
+                    <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" id="jenis_kelamin-edit" name="jenis_kelamin" v-model="formEdit.jenis_kelamin">
+                        <option value="">-Pilih Jenis Kelamin--</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
 
-                    <InputError :message="formEdit.errors.harga_beli" class="mt-2" />
-                </div>
-                <div>
-                    <InputLabel for="harga_jual-edit" value="Harga Jual" />
-
-                    <TextInput
-                        id="harga_jual-edit"
-                        ref="jualBeliInput"
-                        v-model="formEdit.harga_jual"
-                        type="number"
-                        class="mt-1 block w-full"
-                        autocomplete="harga-jual"
-                    />
-
-                    <InputError :message="formEdit.errors.harga_jual" class="mt-2" />
-                </div>
-                <div>
-                    <InputLabel for="gambar_barang-edit" value="Gambar Barang" />
-
-                    <TextInput
-                        id="gambar_barang-edit"
-                        ref="gambarBarangInput"
-                        @input="formEdit.gambar_barang = $event.target.files[0]"
-                        type="file"
-                        accept="image/png, image/jpeg, image/jpg"
-                        class="mt-1 block w-full"
-                        autocomplete="gambar-barang"
-                    />
-                    <progress v-if="formEdit.progress" :value="formEdit.progress.percentage" max="100">
-                        {{ formEdit.progress.percentage }}%
-                    </progress>
-
-                    <InputError :message="formEdit.errors.gambar_barang" class="mt-2" />
+                    <InputError :message="formEdit.errors.jenis_kelamin" class="mt-2" />
                 </div>
 
                 <div class="flex items-center gap-4">
                     <PrimaryButton :disabled="formEdit.processing">Save</PrimaryButton>
-                    <SecondaryButton @click="closeModalEdit"> Cancel </SecondaryButton>
+                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
 
                     <Transition
                         enter-active-class="transition ease-in-out"

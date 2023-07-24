@@ -30,6 +30,9 @@ Route::prefix('manage-user')->group(function (){
     Route::post('/create', [\App\Http\Controllers\ManageUserController::class, 'create'])->name('user.create');
     Route::post('/delete', [\App\Http\Controllers\ManageUserController::class, 'delete'])->name('user.delete');
     Route::post('/edit', [\App\Http\Controllers\ManageUserController::class, 'edit'])->name('user.edit');
+    Route::get('/staff', [\App\Http\Controllers\ManageUserController::class, 'indexStaff'])->name('user.staff.index')->middleware('role:admin');
+    Route::post('/staff/create', [\App\Http\Controllers\ManageUserController::class, 'createStaff'])->name('user.staff.create')->middleware('role:admin');
+    Route::post('/staff/edit', [\App\Http\Controllers\ManageUserController::class, 'editStaff'])->name('user.staff.edit')->middleware('role:admin');
 })->middleware(['auth']);
 
 Route::prefix('barang')->group(function(){

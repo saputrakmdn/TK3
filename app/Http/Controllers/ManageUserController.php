@@ -96,4 +96,54 @@ class ManageUserController extends Controller
 
         return back();
     }
+
+    public function indexStaff()
+    {
+        $users = User::query()->select('id', 'name', 'email', 'jenis_kelamin')->where('role', '=', 'staff')->get();
+        return Inertia::render('Staff/List', [
+            'records' => $users
+        ]);
+    }
+
+    public function createStaff(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:'.User::class,
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'jenis_kelamin' => 'required'
+        ]);
+
+        $user = new User();
+        $user->name = $request->nama;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role = 'staff';
+        $user->jenis_kelamin = $request->jenis_kelamin;
+        $user->save();
+
+        return back();
+    }
+
+    public function editStaff(Request $request)
+    {
+        $rules = [
+            'nama' => 'required|string|max:255',
+            'jenis_kelamin' => 'required'
+        ];
+
+        if(!is_null($request->password))
+            $rules['password'] = ['confirmed', Rules\Password::defaults()];
+        $request->validate($rules);
+
+        $form = $request->except(['id', 'password', 'password_confirmation', 'nama']);
+        $form['name'] = $request->nama;
+
+        if(!is_null($request->password))
+            $form['password'] = Hash::make($request->password);
+
+        User::query()->where('id', '=', $request->id)->update($form);
+
+        return back();
+    }
 }

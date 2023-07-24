@@ -100,7 +100,6 @@ const onNewRecord = () =>{
 };
 
 const onEditData = (event) =>{
-    console.log(event);
     formEdit.id = event.id;
     formEdit.nama = event.name;
     formEdit.email = event.email;
@@ -166,7 +165,7 @@ const editUser = () => {
 </script>
 
 <template>
-    <Head title="Useer"></Head>
+    <Head title="User"></Head>
 
     <AuthenticatedLayout>
         <template #header>
