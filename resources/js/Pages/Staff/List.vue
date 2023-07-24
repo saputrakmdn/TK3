@@ -250,7 +250,7 @@ const editUser = () => {
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                Setelah data barang dihapus, semua sumber daya dan datanya akan dihapus secara permanen.
+                Setelah data staff dihapus, semua sumber daya dan datanya akan dihapus secara permanen.
             </p>
 
             <div class="mt-6 flex justify-end">
