@@ -333,7 +333,7 @@ const editBarang = () => {
     <Modal :show="modalEdit" @close="closeModalEdit">
         <div class="p-6">
             <h2 class="text-lg font-medium text-gray-900">
-                Tambah Barang
+                Edit Barang
             </h2>
 
             <form @submit.prevent="editBarang" class="mt-6 space-y-6" enctype="multipart/form-data">

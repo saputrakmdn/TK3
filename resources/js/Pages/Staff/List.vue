@@ -271,7 +271,7 @@ const editUser = () => {
     <Modal :show="modalEdit" @close="closeModalEdit">
         <div class="p-6">
             <h2 class="text-lg font-medium text-gray-900">
-                Edit User
+                Edit Staff
             </h2>
 
             <form @submit.prevent="editUser" class="mt-6 space-y-6" enctype="multipart/form-data">
@@ -342,7 +342,7 @@ const editUser = () => {
 
                 <div class="flex items-center gap-4">
                     <PrimaryButton :disabled="formEdit.processing">Save</PrimaryButton>
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                    <SecondaryButton @click="closeModalEdit"> Cancel </SecondaryButton>
 
                     <Transition
                         enter-active-class="transition ease-in-out"

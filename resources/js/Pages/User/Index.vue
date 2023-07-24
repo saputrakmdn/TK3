@@ -480,7 +480,7 @@ const editUser = () => {
 
                 <div class="flex items-center gap-4">
                     <PrimaryButton :disabled="formEdit.processing">Save</PrimaryButton>
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                    <SecondaryButton @click="closeModalEdit"> Cancel </SecondaryButton>
 
                     <Transition
                         enter-active-class="transition ease-in-out"
