@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "@mertefecerit/vuetable": "^1.0.19",
+        "chart.js": "^4.3.2",
         "datatables.net-bs5": "^1.13.5",
         "datatables.net-dt": "^1.13.5",
         "datatables.net-responsive": "^2.5.0",

@@ -42,6 +42,10 @@ Route::prefix('barang')->group(function(){
     Route::post('/edit', [\App\Http\Controllers\BarangController::class, 'edit'])->name('barang.edit');
 })->middleware(['auth', 'role:staff']);
 
+Route::prefix('reporting')->group(function (){
+   Route::get('/', [\App\Http\Controllers\ReportingController::class, 'index'])->name('reporting.index');
+});
+
 Route::prefix('order')->group(function (){
    Route::get('/', [\App\Http\Controllers\OrderController::class, 'index'])->name('order.index');
    Route::post('/submit', [\App\Http\Controllers\OrderController::class, 'submit'])->name('order.submit');
